@@ -86,6 +86,7 @@ class Ui_MainWindow(object):
         self.tabWidget.setGeometry(QRect(150, 9, 371, 61))
         self.tab = QWidget()
         self.tab.setObjectName(u"tab")
+        self.tab.setEnabled(True)
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QWidget()
         self.tab_2.setObjectName(u"tab_2")
@@ -165,7 +166,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(3)
+        self.tabWidget.setCurrentIndex(0)
 
         QMetaObject.connectSlotsByName(MainWindow)
 
@@ -173,7 +174,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"\u8bed\u8a00\u9009\u62e9", None))
+        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"\u7f16\u7801\u683c\u5f0f", None))
         self.ASCIIButton.setText(QCoreApplication.translate("MainWindow", u"ASCII\u7801", None))
         self.GB2312Button.setText(QCoreApplication.translate("MainWindow", u"GB2312\u7801", None))
         self.GBKButton.setText(QCoreApplication.translate("MainWindow", u"GBK\u7801", None))
@@ -257,15 +258,14 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         self.save_filepath = None
         self.setupUi(self)
         self.open_file_path = ""
+        self.selectButton.clicked.connect(self.open_file)
+        self.nowCoding = 'utf-8'
 
     def decode(self, character_encoding):
         file_path = self.open_file_path
         if os.path.exists(file_path):
             with open(file_path, 'rb') as file:
                 data = file.read()
-                # Suppose character_encoding is set by the user
-                # character_encoding = 'utf-8'  # or any other encoding like 'utf-8', 'utf-16', 'big5', etc.
-                # When setting up the model for the tableView
                 hexModel = HexModel(data, character_encoding)
                 self.tableView.setModel(hexModel)
                 self.tableView.resizeColumnsToContents()
@@ -279,17 +279,9 @@ class mainWindow(QMainWindow, Ui_MainWindow):
             # 替换为单反斜杠
             self.open_file_path = str(self.open_file_path).replace("/", "\\").replace(":", ":")
             self.open_file_name = os.path.basename(self.open_file_path)
-            # 使用 HTML 设置文本居中
-            centered_text = f'<div style="text-align:center; vertical-align:middle;font-size:9pt;">{self.open_file_name}</div>'
-            self.textBrowser.setHtml(centered_text)
-            print("打开文件：" + self.open_file_path + " 文件名：" + self.open_file_name)
-            # 更新编码查看窗口
-            # 获取选中标签页的文本
-            currentTabText = self.tabWidget_2.tabText(self.tabWidget_2.currentIndex())
-            print("当前选中的encodingTab：" + currentTabText)
-            # 调用 self.decode() 函数，并传入当前标签页的文本
+
             if self.open_file_path is not None and self.open_file_path != "":
-                self.decode(str(currentTabText))
+                self.decode(str(self.nowCoding))
         except:
             print("取消打开文件")
 
