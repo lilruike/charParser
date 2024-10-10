@@ -1,3 +1,5 @@
+import os
+
 from PySide6 import QtCore, QtWidgets, QtGui
 import sys
 
@@ -199,10 +201,78 @@ class Ui_MainWindow(object):
     # retranslateUi
 
 
+class HexModel(QtCore.QAbstractTableModel):
+    def __init__(self, data, character_encoding='utf-8', parent=None):
+        super(HexModel, self).__init__(parent)
+        self._data = data
+        self.character_encoding = character_encoding
+
+    def rowCount(self, parent=None):
+        return (len(self._data) + 15) // 16
+
+    def columnCount(self, parent=None):
+        return 17  # 16 columns for hex values, 1 for the text representation
+
+    def data(self, index, role=QtCore.Qt.DisplayRole):
+        if role == QtCore.Qt.DisplayRole:
+            byte_index = index.row() * 16 + index.column()
+            if index.column() < 16:  # 十六进制表示
+                if byte_index < len(self._data):  # 确保不超出数据范围
+                    return '{:02X}'.format(self._data[byte_index])
+                else:
+                    return ""  # 数据不满16字节的部分用空字符串填充
+            else:  # 文本表示
+                if index.column() == 16:  # 只在最后一列处理文本
+                    start = index.row() * 16
+                    end = min(start + 16, len(self._data))
+                    bytes_slice = self._data[start:end]
+                    try:
+                        # 解码整个字节切片
+                        decoded_text = bytes_slice.decode(self.character_encoding, errors='strict')
+                        # 用点填充无法显示的字符
+                        printable_text = ''.join(c if c.isprintable() else '·' for c in decoded_text)
+                        return printable_text
+                    except UnicodeDecodeError as e:
+                        # 如果在行的中间遇到解码错误，尝试解码直到出错的部分
+                        valid_text = bytes_slice[:e.start].decode(self.character_encoding, errors='strict')
+                        # 用点填充解码错误后的剩余部分
+                        return valid_text + '·' * (16 - len(valid_text))
+                    # except LookupError:
+                    #     print("编码错误")
+        elif role == QtCore.Qt.TextAlignmentRole:
+            return QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter
+
+    def headerData(self, section, orientation, role):
+        if role == QtCore.Qt.DisplayRole:
+            if orientation == QtCore.Qt.Horizontal:
+                if section < 16:
+                    return '{:X}'.format(section)
+                else:
+                    return 'Text'
+            else:
+                return '{:010X}'.format(section * 16)
+
+
 class mainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.open_file_path = ""
+
+    def decode(self, character_encoding):
+        file_path = self.open_file_path
+        if os.path.exists(file_path):
+            with open(file_path, 'rb') as file:
+                data = file.read()
+                # Suppose character_encoding is set by the user
+                # character_encoding = 'utf-8'  # or any other encoding like 'utf-8', 'utf-16', 'big5', etc.
+                # When setting up the model for the tableView
+                hexModel = HexModel(data, character_encoding)
+                self.tableView.setModel(hexModel)
+                self.tableView.resizeColumnsToContents()
+                self.tableView.setColumnWidth(16, 114)  # You may need to adjust this width
+        else:
+            print("文件不存在")
 
 
 class MyWidget(QtWidgets.QWidget):
