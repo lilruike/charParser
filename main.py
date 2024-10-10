@@ -1,22 +1,20 @@
-import os
-
-from PySide6 import QtCore, QtWidgets, QtGui
-import sys
-
 # 实现.txt进入显示整个文本的十六进制
 # 在查看器中查看到不同的编码格式 常见的编码（如ASCII码， GB2312码，GBK码，Big5，UTF-8，UTF-16）
 # word count
 # word search
 # -*- coding: utf-8 -*-
 
+# -*- coding: utf-8 -*-
 ################################################################################
-## Form generated from reading UI file 'mainWindowgmopHi.ui'
+## Form generated from reading UI file 'mainWindowCaxyVC.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.7.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
-
+import os
+from PySide6 import QtCore, QtWidgets, QtGui
+import sys
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
                             QMetaObject, QObject, QPoint, QRect,
                             QSize, QTime, QUrl, Qt)
@@ -27,7 +25,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QGroupBox, QHBoxLayout, QHeaderView,
                                QLabel, QLineEdit, QMainWindow, QPushButton,
                                QRadioButton, QSizePolicy, QStatusBar, QTabWidget,
-                               QTableView, QVBoxLayout, QWidget)
+                               QTableView, QVBoxLayout, QWidget, QFileDialog)
 
 
 class Ui_MainWindow(object):
@@ -50,39 +48,39 @@ class Ui_MainWindow(object):
         self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.pushButton = QPushButton(self.verticalLayoutWidget)
-        self.pushButton.setObjectName(u"pushButton")
+        self.ASCIIButton = QPushButton(self.verticalLayoutWidget)
+        self.ASCIIButton.setObjectName(u"ASCIIButton")
 
-        self.verticalLayout.addWidget(self.pushButton)
+        self.verticalLayout.addWidget(self.ASCIIButton)
 
-        self.pushButton_3 = QPushButton(self.verticalLayoutWidget)
-        self.pushButton_3.setObjectName(u"pushButton_3")
+        self.GB2312Button = QPushButton(self.verticalLayoutWidget)
+        self.GB2312Button.setObjectName(u"GB2312Button")
 
-        self.verticalLayout.addWidget(self.pushButton_3)
+        self.verticalLayout.addWidget(self.GB2312Button)
 
-        self.pushButton_6 = QPushButton(self.verticalLayoutWidget)
-        self.pushButton_6.setObjectName(u"pushButton_6")
+        self.GBKButton = QPushButton(self.verticalLayoutWidget)
+        self.GBKButton.setObjectName(u"GBKButton")
 
-        self.verticalLayout.addWidget(self.pushButton_6)
+        self.verticalLayout.addWidget(self.GBKButton)
 
-        self.pushButton_5 = QPushButton(self.verticalLayoutWidget)
-        self.pushButton_5.setObjectName(u"pushButton_5")
+        self.Big5Button = QPushButton(self.verticalLayoutWidget)
+        self.Big5Button.setObjectName(u"Big5Button")
 
-        self.verticalLayout.addWidget(self.pushButton_5)
+        self.verticalLayout.addWidget(self.Big5Button)
 
-        self.pushButton_4 = QPushButton(self.verticalLayoutWidget)
-        self.pushButton_4.setObjectName(u"pushButton_4")
+        self.UTF8Button = QPushButton(self.verticalLayoutWidget)
+        self.UTF8Button.setObjectName(u"UTF8Button")
 
-        self.verticalLayout.addWidget(self.pushButton_4)
+        self.verticalLayout.addWidget(self.UTF8Button)
 
-        self.pushButton_2 = QPushButton(self.verticalLayoutWidget)
-        self.pushButton_2.setObjectName(u"pushButton_2")
+        self.UTF16Button = QPushButton(self.verticalLayoutWidget)
+        self.UTF16Button.setObjectName(u"UTF16Button")
 
-        self.verticalLayout.addWidget(self.pushButton_2)
+        self.verticalLayout.addWidget(self.UTF16Button)
 
-        self.pushButton_7 = QPushButton(self.centralwidget)
-        self.pushButton_7.setObjectName(u"pushButton_7")
-        self.pushButton_7.setGeometry(QRect(14, 10, 111, 31))
+        self.selectButton = QPushButton(self.centralwidget)
+        self.selectButton.setObjectName(u"selectButton")
+        self.selectButton.setGeometry(QRect(14, 10, 111, 31))
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
         self.tabWidget.setGeometry(QRect(150, 9, 371, 61))
@@ -151,10 +149,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addWidget(self.radioButton)
 
-        self.pushButton_8 = QPushButton(self.horizontalLayoutWidget_2)
-        self.pushButton_8.setObjectName(u"pushButton_8")
+        self.serachButton = QPushButton(self.horizontalLayoutWidget_2)
+        self.serachButton.setObjectName(u"serachButton")
 
-        self.horizontalLayout_2.addWidget(self.pushButton_8)
+        self.horizontalLayout_2.addWidget(self.serachButton)
 
         self.tabWidget.addTab(self.tab_4, "")
         self.tableView = QTableView(self.centralwidget)
@@ -167,7 +165,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(3)
 
         QMetaObject.connectSlotsByName(MainWindow)
 
@@ -176,13 +174,13 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"\u8bed\u8a00\u9009\u62e9", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"ASCII\u7801", None))
-        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"GB2312\u7801", None))
-        self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"GBK\u7801", None))
-        self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"Big5", None))
-        self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"UTF-8", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"UTF-16", None))
-        self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"\u9009\u62e9\u6587\u4ef6", None))
+        self.ASCIIButton.setText(QCoreApplication.translate("MainWindow", u"ASCII\u7801", None))
+        self.GB2312Button.setText(QCoreApplication.translate("MainWindow", u"GB2312\u7801", None))
+        self.GBKButton.setText(QCoreApplication.translate("MainWindow", u"GBK\u7801", None))
+        self.Big5Button.setText(QCoreApplication.translate("MainWindow", u"Big5", None))
+        self.UTF8Button.setText(QCoreApplication.translate("MainWindow", u"UTF-8", None))
+        self.UTF16Button.setText(QCoreApplication.translate("MainWindow", u"UTF-16", None))
+        self.selectButton.setText(QCoreApplication.translate("MainWindow", u"\u9009\u62e9\u6587\u4ef6", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab),
                                   QCoreApplication.translate("MainWindow", u"\u67e5\u770b\u7f16\u7801", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2),
@@ -195,7 +193,7 @@ class Ui_MainWindow(object):
                                   QCoreApplication.translate("MainWindow", u"\u6587\u5b57\u8ba1\u6570", None))
         self.radioButton_2.setText(QCoreApplication.translate("MainWindow", u"\u67e5\u8be2\u6587\u5b57", None))
         self.radioButton.setText(QCoreApplication.translate("MainWindow", u"\u67e5\u8be2\u5b57\u8282", None))
-        self.pushButton_8.setText(QCoreApplication.translate("MainWindow", u"\u67e5\u8be2", None))
+        self.serachButton.setText(QCoreApplication.translate("MainWindow", u"\u67e5\u8be2", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4),
                                   QCoreApplication.translate("MainWindow", u"\u6587\u5b57\u67e5\u8be2", None))
     # retranslateUi
@@ -256,6 +254,7 @@ class HexModel(QtCore.QAbstractTableModel):
 class mainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
+        self.save_filepath = None
         self.setupUi(self)
         self.open_file_path = ""
 
@@ -274,24 +273,34 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         else:
             print("文件不存在")
 
+    def open_file(self):
+        self.open_file_path, _ = QFileDialog.getOpenFileName(None, '打开文本文件(路径尽量不要有中文)', '', '')
+        try:
+            # 替换为单反斜杠
+            self.open_file_path = str(self.open_file_path).replace("/", "\\").replace(":", ":")
+            self.open_file_name = os.path.basename(self.open_file_path)
+            # 使用 HTML 设置文本居中
+            centered_text = f'<div style="text-align:center; vertical-align:middle;font-size:9pt;">{self.open_file_name}</div>'
+            self.textBrowser.setHtml(centered_text)
+            print("打开文件：" + self.open_file_path + " 文件名：" + self.open_file_name)
+            # 更新编码查看窗口
+            # 获取选中标签页的文本
+            currentTabText = self.tabWidget_2.tabText(self.tabWidget_2.currentIndex())
+            print("当前选中的encodingTab：" + currentTabText)
+            # 调用 self.decode() 函数，并传入当前标签页的文本
+            if self.open_file_path is not None and self.open_file_path != "":
+                self.decode(str(currentTabText))
+        except:
+            print("取消打开文件")
 
-class MyWidget(QtWidgets.QWidget):
-    def __init__(self):
-        super().__init__()
-
-        self.button = QtWidgets.QPushButton("点这里")
-
-        self.layout = QtWidgets.QVBoxLayout(self)
-        self.layout.addWidget(self.button)
-
-        self.button.clicked.connect(self.showMessage)
-
-    @QtCore.Slot()
-    def showMessage(self):
-        msgBox = QtWidgets.QMessageBox()
-        msgBox.setText("Hello world")
-        msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
-        ret = msgBox.exec()
+    def save_file(self):
+        self.save_file_path, _ = QFileDialog.getSaveFileName(None, '保存文本文件(路径尽量不要有中文)', '', '(*.txt)')
+        try:
+            # 替换为单反斜杠
+            self.save_filepath = str(self.save_file_path).replace("/", "\\").replace(":", ":")
+            print(self.save_filepath)
+        except:
+            print("取消保存文件")
 
 
 if __name__ == "__main__":
@@ -302,3 +311,21 @@ if __name__ == "__main__":
     widget.show()
 
     sys.exit(app.exec())
+
+# class MyWidget(QtWidgets.QWidget):
+#     def __init__(self):
+#         super().__init__()
+#
+#         self.button = QtWidgets.QPushButton("点这里")
+#
+#         self.layout = QtWidgets.QVBoxLayout(self)
+#         self.layout.addWidget(self.button)
+#
+#         self.button.clicked.connect(self.showMessage)
+#
+#     @QtCore.Slot()
+#     def showMessage(self):
+#         msgBox = QtWidgets.QMessageBox()
+#         msgBox.setText("Hello world")
+#         msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
+#         ret = msgBox.exec()

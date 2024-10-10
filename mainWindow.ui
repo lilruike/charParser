@@ -47,42 +47,42 @@ background-color: rgb(255, 170, 255);</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="ASCIIButton">
         <property name="text">
          <string>ASCII码</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="GB2312Button">
         <property name="text">
          <string>GB2312码</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_6">
+       <widget class="QPushButton" name="GBKButton">
         <property name="text">
          <string>GBK码</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_5">
+       <widget class="QPushButton" name="Big5Button">
         <property name="text">
          <string>Big5</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_4">
+       <widget class="QPushButton" name="UTF8Button">
         <property name="text">
          <string>UTF-8</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="UTF16Button">
         <property name="text">
          <string>UTF-16</string>
         </property>
@@ -91,7 +91,7 @@ background-color: rgb(255, 170, 255);</string>
      </layout>
     </widget>
    </widget>
-   <widget class="QPushButton" name="pushButton_7">
+   <widget class="QPushButton" name="selectButton">
     <property name="geometry">
      <rect>
       <x>14</x>
@@ -114,7 +114,7 @@ background-color: rgb(255, 170, 255);</string>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -225,7 +225,7 @@ background-color: rgb(255, 170, 255);</string>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_8">
+         <widget class="QPushButton" name="serachButton">
           <property name="text">
            <string>查询</string>
           </property>
