@@ -50,31 +50,37 @@ class Ui_MainWindow(object):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.ASCIIButton = QPushButton(self.verticalLayoutWidget)
         self.ASCIIButton.setObjectName(u"ASCIIButton")
+        self.ASCIIButton.setCheckable(True)
 
         self.verticalLayout.addWidget(self.ASCIIButton)
 
         self.GB2312Button = QPushButton(self.verticalLayoutWidget)
         self.GB2312Button.setObjectName(u"GB2312Button")
+        self.GB2312Button.setCheckable(True)
 
         self.verticalLayout.addWidget(self.GB2312Button)
 
         self.GBKButton = QPushButton(self.verticalLayoutWidget)
         self.GBKButton.setObjectName(u"GBKButton")
+        self.GBKButton.setCheckable(True)
 
         self.verticalLayout.addWidget(self.GBKButton)
 
         self.Big5Button = QPushButton(self.verticalLayoutWidget)
         self.Big5Button.setObjectName(u"Big5Button")
+        self.Big5Button.setCheckable(True)
 
         self.verticalLayout.addWidget(self.Big5Button)
 
         self.UTF8Button = QPushButton(self.verticalLayoutWidget)
         self.UTF8Button.setObjectName(u"UTF8Button")
+        self.UTF8Button.setCheckable(True)
 
         self.verticalLayout.addWidget(self.UTF8Button)
 
         self.UTF16Button = QPushButton(self.verticalLayoutWidget)
         self.UTF16Button.setObjectName(u"UTF16Button")
+        self.UTF16Button.setCheckable(True)
 
         self.verticalLayout.addWidget(self.UTF16Button)
 
@@ -175,9 +181,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"\u7f16\u7801\u683c\u5f0f", None))
-        self.ASCIIButton.setText(QCoreApplication.translate("MainWindow", u"ASCII\u7801", None))
-        self.GB2312Button.setText(QCoreApplication.translate("MainWindow", u"GB2312\u7801", None))
-        self.GBKButton.setText(QCoreApplication.translate("MainWindow", u"GBK\u7801", None))
+        self.ASCIIButton.setText(QCoreApplication.translate("MainWindow", u"ASCII", None))
+        self.GB2312Button.setText(QCoreApplication.translate("MainWindow", u"GB2312", None))
+        self.GBKButton.setText(QCoreApplication.translate("MainWindow", u"GBK", None))
         self.Big5Button.setText(QCoreApplication.translate("MainWindow", u"Big5", None))
         self.UTF8Button.setText(QCoreApplication.translate("MainWindow", u"UTF-8", None))
         self.UTF16Button.setText(QCoreApplication.translate("MainWindow", u"UTF-16", None))
@@ -205,6 +211,7 @@ class HexModel(QtCore.QAbstractTableModel):
         super(HexModel, self).__init__(parent)
         self._data = data
         self.character_encoding = character_encoding
+        # print(data)
 
     def rowCount(self, parent=None):
         return (len(self._data) + 15) // 16
@@ -219,11 +226,12 @@ class HexModel(QtCore.QAbstractTableModel):
                 if byte_index < len(self._data):  # 确保不超出数据范围
                     return '{:02X}'.format(self._data[byte_index])
                 else:
-                    return ""  # 数据不满16字节的部分用空字符串填充
+                    return "  "  # 数据不满16字节的部分用空字符串填充
             else:  # 文本表示
                 if index.column() == 16:  # 只在最后一列处理文本
-                    start = index.row() * 16
-                    end = min(start + 16, len(self._data))
+                    unit = 16
+                    start = index.row() * unit
+                    end = min(start + unit, len(self._data))
                     bytes_slice = self._data[start:end]
                     try:
                         # 解码整个字节切片
@@ -235,7 +243,7 @@ class HexModel(QtCore.QAbstractTableModel):
                         # 如果在行的中间遇到解码错误，尝试解码直到出错的部分
                         valid_text = bytes_slice[:e.start].decode(self.character_encoding, errors='strict')
                         # 用点填充解码错误后的剩余部分
-                        return valid_text + '·' * (16 - len(valid_text))
+                        return valid_text + '.' * (unit - len(valid_text))
                     # except LookupError:
                     #     print("编码错误")
         elif role == QtCore.Qt.TextAlignmentRole:
@@ -257,9 +265,25 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.save_filepath = None
         self.setupUi(self)
-        self.open_file_path = ""
+        self.open_file_path = None
         self.selectButton.clicked.connect(self.open_file)
         self.nowCoding = 'utf-8'
+        self.charButtons = [self.UTF8Button, self.UTF16Button, self.GB2312Button, self.GBKButton, self.ASCIIButton,
+                            self.Big5Button]
+
+        for btn in self.charButtons:
+            btn.setCheckable(True)
+            btn.clicked.connect(self.button_clicked)
+
+    def button_clicked(self):
+        clicked_button = self.sender()
+        # 还原其他未被点击的按钮
+        for button in self.charButtons:
+            if button != clicked_button:
+                button.setChecked(False)
+        self.nowCoding = clicked_button.text()
+        self.decode(self.nowCoding)
+        # print(self.nowCoding)
 
     def decode(self, character_encoding):
         file_path = self.open_file_path
@@ -269,17 +293,17 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                 hexModel = HexModel(data, character_encoding)
                 self.tableView.setModel(hexModel)
                 self.tableView.resizeColumnsToContents()
-                self.tableView.setColumnWidth(16, 114)  # You may need to adjust this width
+                self.tableView.setColumnWidth(16, 200)  # You may need to adjust this width
         else:
             print("文件不存在")
 
     def open_file(self):
-        self.open_file_path, _ = QFileDialog.getOpenFileName(None, '打开文本文件(路径尽量不要有中文)', '', '')
+        if self.open_file_path is None:
+            self.open_file_path, _ = QFileDialog.getOpenFileName(None, '打开文本文件(路径尽量不要有中文)', '', '')
         try:
             # 替换为单反斜杠
             self.open_file_path = str(self.open_file_path).replace("/", "\\").replace(":", ":")
             self.open_file_name = os.path.basename(self.open_file_path)
-
             if self.open_file_path is not None and self.open_file_path != "":
                 self.decode(str(self.nowCoding))
         except:

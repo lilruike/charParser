@@ -49,21 +49,30 @@ background-color: rgb(255, 170, 255);</string>
       <item>
        <widget class="QPushButton" name="ASCIIButton">
         <property name="text">
-         <string>ASCII码</string>
+         <string>ASCII</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="GB2312Button">
         <property name="text">
-         <string>GB2312码</string>
+         <string>GB2312</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="GBKButton">
         <property name="text">
-         <string>GBK码</string>
+         <string>GBK</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -72,6 +81,9 @@ background-color: rgb(255, 170, 255);</string>
         <property name="text">
          <string>Big5</string>
         </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -79,12 +91,18 @@ background-color: rgb(255, 170, 255);</string>
         <property name="text">
          <string>UTF-8</string>
         </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="UTF16Button">
         <property name="text">
          <string>UTF-16</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
