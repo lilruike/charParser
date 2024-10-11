@@ -241,7 +241,7 @@ class HexModel(QtCore.QAbstractTableModel):
                         return printable_text
                     except UnicodeDecodeError as e:
                         # 如果在行的中间遇到解码错误，尝试解码直到出错的部分
-                        valid_text = bytes_slice[:e.start].decode(self.character_encoding, errors='strict')
+                        valid_text = bytes_slice[:e.start].decode(self.character_encoding, errors='backslashreplace')
                         # 用点填充解码错误后的剩余部分
                         return valid_text + '.' * (unit - len(valid_text))
                     # except LookupError:
@@ -266,6 +266,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         self.save_filepath = None
         self.setupUi(self)
         self.open_file_path = None
+        self.open_file_name = None
         self.selectButton.clicked.connect(self.open_file)
         self.nowCoding = 'utf-8'
         self.charButtons = [self.UTF8Button, self.UTF16Button, self.GB2312Button, self.GBKButton, self.ASCIIButton,
@@ -274,6 +275,25 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         for btn in self.charButtons:
             btn.setCheckable(True)
             btn.clicked.connect(self.button_clicked)
+            btn.clicked.connect(self.statusBarChange)
+
+        self.tabWidget.currentChanged.connect(self.statusBarChange)
+
+    def statusBarChange(self):
+        # 获取当前选中的Tab文本
+        current_tab_text = self.tabWidget.tabText(self.tabWidget.currentIndex())
+        # 获取所有按钮的文本
+        # buttons_text = ", ".join([button.text() for button in self.buttons])
+        buttons_text = None
+        for btn in self.charButtons:
+            if btn.isChecked():
+                buttons_text = btn.text()
+                break
+        if buttons_text is None:
+            buttons_text = "默认UTF-8"
+        # 更新状态栏的文本
+        self.statusbar.showMessage(
+            f"当前模式: {current_tab_text} | 当前编码: {buttons_text} | 文件：{self.open_file_name}")
 
     def button_clicked(self):
         clicked_button = self.sender()
@@ -299,22 +319,22 @@ class mainWindow(QMainWindow, Ui_MainWindow):
 
     def open_file(self):
         if self.open_file_path is None:
-            self.open_file_path, _ = QFileDialog.getOpenFileName(None, '打开文本文件(路径尽量不要有中文)', '', '')
+            self.open_file_path, _ = QFileDialog.getOpenFileName(None, '打开文本文件', '', '')
         try:
             # 替换为单反斜杠
             self.open_file_path = str(self.open_file_path).replace("/", "\\").replace(":", ":")
             self.open_file_name = os.path.basename(self.open_file_path)
             if self.open_file_path is not None and self.open_file_path != "":
                 self.decode(str(self.nowCoding))
+            self.statusBarChange()
         except:
             print("取消打开文件")
 
     def save_file(self):
-        self.save_file_path, _ = QFileDialog.getSaveFileName(None, '保存文本文件(路径尽量不要有中文)', '', '(*.txt)')
+        self.save_file_path, _ = QFileDialog.getSaveFileName(None, '保存文本文件', '', '(*.txt)')
         try:
             # 替换为单反斜杠
             self.save_filepath = str(self.save_file_path).replace("/", "\\").replace(":", ":")
-            print(self.save_filepath)
         except:
             print("取消保存文件")
 
