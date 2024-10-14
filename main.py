@@ -1,48 +1,13 @@
-# -*- coding: utf-8 -*-
-################################################################################
-## Form generated from reading UI file 'mainWindowCaxyVC.ui'
-##
-## Created by: Qt User Interface Compiler version 6.7.3
-##
-## WARNING! All changes made in this file will be lost when recompiling UI file!
-################################################################################
 import os
-from PySide6 import QtCore, QtWidgets, QtGui
 import sys
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-                            QMetaObject, QObject, QPoint, QRect,
-                            QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-                           QFont, QFontDatabase, QGradient, QIcon,
-                           QImage, QKeySequence, QLinearGradient, QPainter,
-                           QPalette, QPixmap, QRadialGradient, QTransform, QTextCursor, QTextCharFormat)
-from PySide6.QtWidgets import (QApplication, QGroupBox, QHBoxLayout, QHeaderView,
-                               QLabel, QLineEdit, QMainWindow, QPushButton,
-                               QRadioButton, QSizePolicy, QStatusBar, QTabWidget,
-                               QTableView, QVBoxLayout, QWidget, QFileDialog, QMessageBox, QTextEdit)
-
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-                            QMetaObject, QObject, QPoint, QRect,
-                            QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-                           QFont, QFontDatabase, QGradient, QIcon,
-                           QImage, QKeySequence, QLinearGradient, QPainter,
-                           QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QGroupBox, QHBoxLayout, QHeaderView,
-                               QLabel, QLineEdit, QMainWindow, QPushButton,
-                               QRadioButton, QSizePolicy, QStatusBar, QTabWidget,
-                               QTableView, QTextEdit, QVBoxLayout, QWidget)
-
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-                            QMetaObject, QObject, QPoint, QRect,
-                            QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-                           QFont, QFontDatabase, QGradient, QIcon,
-                           QImage, QKeySequence, QLinearGradient, QPainter,
-                           QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QGroupBox, QHBoxLayout, QHeaderView,
-                               QLabel, QLineEdit, QMainWindow, QPushButton,
-                               QRadioButton, QSizePolicy, QStatusBar, QTabWidget,
+from PySide6 import QtCore, QtWidgets
+from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect,
+                            Qt)
+from PySide6.QtGui import (QColor)
+from PySide6.QtGui import (QTextCursor, QTextCharFormat)
+from PySide6.QtWidgets import (QFileDialog, QMessageBox)
+from PySide6.QtWidgets import (QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMainWindow, QPushButton,
+                               QRadioButton, QStatusBar, QTabWidget,
                                QTableView, QTextEdit, QVBoxLayout, QWidget)
 
 
@@ -539,9 +504,6 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                 model.setData(index, QColor(Qt.white), Qt.BackgroundRole)
 
     def wordSearch(self):
-        # self.cleanTextColor()
-        # self.cleanViewColor()
-        # 查询字节
         self.fileDecode(self.nowCoding)
         input_text = self.lineEdit.text()
         if self.radioButton.isChecked():
@@ -604,22 +566,9 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         format.setForeground(QColor(0, 0, 0))
         cursor.setCharFormat(format)
 
-        # cursor = self.textEdit.textCursor()
-        # cursor.select(QTextCursor.Document)  # Select all text
-        # # cursor.setCharFormat(self.get_color_format(QColor(255, 0, 0)))  # Set text color to red
-        # format = self.textEdit.currentCharFormat()
-        # format.setForeground(QColor(0, 0, 0))
-        # cursor.setCharFormat(format)
-        #
-        # cursor.movePosition(QTextCursor.End)
-        # self.textEdit.setTextCursor(cursor)
-
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-
     widget = mainWindow()
-    # widget.resize(300, 200)
     widget.show()
-
     sys.exit(app.exec())
