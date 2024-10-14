@@ -21,7 +21,7 @@ from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
                            QFont, QFontDatabase, QGradient, QIcon,
                            QImage, QKeySequence, QLinearGradient, QPainter,
-                           QPalette, QPixmap, QRadialGradient, QTransform)
+                           QPalette, QPixmap, QRadialGradient, QTransform, QTextCursor, QTextCharFormat)
 from PySide6.QtWidgets import (QApplication, QGroupBox, QHBoxLayout, QHeaderView,
                                QLabel, QLineEdit, QMainWindow, QPushButton,
                                QRadioButton, QSizePolicy, QStatusBar, QTabWidget,
@@ -296,6 +296,7 @@ class HexModel(QtCore.QAbstractTableModel):
         super(HexModel, self).__init__(parent)
         self._data = data
         self.character_encoding = character_encoding
+        self._background_colors = {}  # 用来存储每个单元格的背景颜色
         # print(data)
 
     def rowCount(self, parent=None):
@@ -313,28 +314,29 @@ class HexModel(QtCore.QAbstractTableModel):
                     return '{:02X}'.format(self._data[byte_index])
                 else:
                     return "  "  # 数据不满16字节的部分用空字符串填充
-            else:  # 文本表示
-                # if index.column() == 16:  # 只在最后一列处理文本
-                #     unit = 16
-                #     start = index.row() * unit
-                #     end = min(start + unit, len(self._data))
-                #     bytes_slice = self._data[start:end]
-                #     try:
-                #         # 解码整个字节切片
-                #         decoded_text = bytes_slice.decode(self.character_encoding, errors='strict')
-                #         # 用点填充无法显示的字符
-                #         printable_text = ''.join(c if c.isprintable() else '·' for c in decoded_text)
-                #         return printable_text
-                #     except UnicodeDecodeError as e:
-                #         # 如果在行的中间遇到解码错误，尝试解码直到出错的部分
-                #         valid_text = bytes_slice[:e.start].decode(self.character_encoding, errors='backslashreplace')
-                #         # 用点填充解码错误后的剩余部分
-                #         return valid_text + '.' * (unit - len(valid_text))
-                #     # except LookupError:
-                #     #     print("编码错误")
-                pass
         elif role == QtCore.Qt.TextAlignmentRole:
             return QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter
+        if role == Qt.BackgroundRole:
+            # 返回该单元格的背景颜色（如果有）
+            return self._background_colors.get((index.row(), index.column()), QColor(Qt.white))
+
+    def setData(self, index, value, role=Qt.EditRole):
+        if not index.isValid():
+            return False
+
+        if role == Qt.EditRole:
+            # 处理数据的编辑逻辑，这里可以扩展为支持修改文本
+            self._data[index.row()][index.column()] = value
+            self.dataChanged.emit(index, index)
+            return True
+
+        if role == Qt.BackgroundRole:
+            # 设置该单元格的背景颜色
+            self._background_colors[(index.row(), index.column())] = value
+            self.dataChanged.emit(index, index, [Qt.BackgroundRole])
+            return True
+
+        return False
 
     def headerData(self, section, orientation, role):
         if role == QtCore.Qt.DisplayRole:
@@ -368,6 +370,7 @@ class mainWindow(QMainWindow, Ui_MainWindow):
             btn.clicked.connect(self.statusBarChange)
 
         self.tabWidget.currentChanged.connect(self.statusBarChange)
+        self.serachButton.clicked.connect(self.wordSearch)
 
     def statusBarChange(self):
         # 获取当前选中的Tab文本
@@ -414,10 +417,13 @@ class mainWindow(QMainWindow, Ui_MainWindow):
             self.convertButton(str(self.nowCoding))
         elif ind == 2:
             self.buttonCheckedClean()
+            self.nowCoding = clicked_button.text()
+            self.fileDecode(str(self.nowCoding))
             self.wordCount()
         elif ind == 3:
+            self.nowCoding = clicked_button.text()
+            self.fileDecode(str(self.nowCoding))
             self.buttonCheckedClean()
-            self.wordSearch()
 
     def fileDecode(self, character_encoding):
         file_path = self.open_file_path
@@ -515,10 +521,99 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                 QMessageBox().warning(self, "警告", "文件不存在")
 
     def wordCount(self):
-        pass
+        non_empty_count = 0
+        model = self.tableView.model()
+        rows = model.rowCount()
+        cols = model.columnCount()
+
+        for row in range(rows):
+            for col in range(cols):
+                index = model.index(row, col)  # 获取模型中指定行列的索引
+                data = model.data(index, Qt.DisplayRole)  # 获取显示角色的数据
+                if data and data.strip() not in ["", "  "]:
+                    non_empty_count += 1
+        self.label_4.setText(str(non_empty_count))
+        self.label_3.setText(str(len(self.textEdit.toPlainText())))
+
+    def cleanViewColor(self):
+        model = self.tableView.model()
+        rows = model.rowCount()
+        cols = model.columnCount()
+        for row in range(rows):
+            for col in range(cols):
+                index = model.index(row, col)
+                model.setData(index, QColor(Qt.white), Qt.BackgroundRole)
 
     def wordSearch(self):
-        pass
+        # 查询字节
+        self.cleanViewColor()
+        if self.radioButton.isChecked():
+            model = self.tableView.model()
+            found = False
+            hex_value = self.lineEdit.text()
+            rows = model.rowCount()
+            cols = model.columnCount()
+
+            for row in range(rows):
+                for col in range(cols):
+                    index = model.index(row, col)
+                    cell_value = model.data(index, Qt.DisplayRole)
+                    model.setData(index, QColor(Qt.white), Qt.BackgroundRole)
+                    if cell_value == hex_value:
+                        model.setData(index, QColor(Qt.green), Qt.BackgroundRole)  # 设置背景为绿色
+                        found = True
+            if found:
+                return
+            else:
+                for row in range(rows):
+                    for col in range(cols):
+                        index = model.index(row, col)
+                        model.setData(index, QColor(Qt.red), Qt.BackgroundRole)  # 设置背景为红色
+
+        if self.radioButton_2.isChecked():
+
+            input_text = self.lineEdit.text()
+
+            # 创建光标并选择所有文本
+            cursor = self.textEdit.textCursor()
+            # cursor.select(QTextCursor.Document)  # 选择整个文档
+            # cursor.mergeCharFormat(QTextCharFormat())  # 清除原有格式
+            #
+            # # 重新设置所有文本为黑色
+            # self.textEdit.setTextColor(QColor(0, 0, 0))  # 恢复为黑色
+
+            if input_text != "":
+                # 创建 QTextCharFormat 用于设置颜色
+                format_match = QTextCharFormat()
+                format_match.setForeground(QColor(0, 255, 0))  # 设置为绿色
+                # 找到匹配的内容并设置颜色
+                cursor = self.textEdit.textCursor()
+                cursor.setPosition(0)
+                found_match = False  # 用于跟踪是否找到匹配
+
+                while True:
+                    cursor = self.textEdit.document().find(input_text, cursor)
+                    if cursor.isNull():
+                        break
+                    cursor.mergeCharFormat(format_match)
+                    found_match = True  # 找到至少一个匹配
+
+                if not found_match:
+                    # 如果没有找到匹配，设置所有文字为红色
+                    self.textEdit.selectAll()
+                    self.textEdit.setTextColor(QColor(255, 0, 0))  # 设置为红色
+                    cursor.mergeCharFormat(format_match)
+            else:
+                # 如果输入框为空，恢复为黑色
+                self.textEdit.selectAll()
+                self.textEdit.setTextColor(QColor(0, 0, 0))
+                format_match = QTextCharFormat()
+                format_match.setForeground(QColor(0, 0, 0))
+            cursor.mergeCharFormat(format_match)
+
+            # 设置光标回到文本末尾
+            cursor.movePosition(QTextCursor.End)
+            self.textEdit.setTextCursor(cursor)
 
 
 if __name__ == "__main__":
