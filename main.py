@@ -25,84 +25,143 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QGroupBox, QHBoxLayout, QHeaderView,
                                QLabel, QLineEdit, QMainWindow, QPushButton,
                                QRadioButton, QSizePolicy, QStatusBar, QTabWidget,
-                               QTableView, QVBoxLayout, QWidget, QFileDialog)
+                               QTableView, QVBoxLayout, QWidget, QFileDialog, QMessageBox, QTextEdit)
+
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+                            QMetaObject, QObject, QPoint, QRect,
+                            QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+                           QFont, QFontDatabase, QGradient, QIcon,
+                           QImage, QKeySequence, QLinearGradient, QPainter,
+                           QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QGroupBox, QHBoxLayout, QHeaderView,
+                               QLabel, QLineEdit, QMainWindow, QPushButton,
+                               QRadioButton, QSizePolicy, QStatusBar, QTabWidget,
+                               QTableView, QTextEdit, QVBoxLayout, QWidget)
+
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+                            QMetaObject, QObject, QPoint, QRect,
+                            QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+                           QFont, QFontDatabase, QGradient, QIcon,
+                           QImage, QKeySequence, QLinearGradient, QPainter,
+                           QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QGroupBox, QHBoxLayout, QHeaderView,
+                               QLabel, QLineEdit, QMainWindow, QPushButton,
+                               QRadioButton, QSizePolicy, QStatusBar, QTabWidget,
+                               QTableView, QTextEdit, QVBoxLayout, QWidget)
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(546, 401)
+        MainWindow.resize(546, 432)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.groupBox = QGroupBox(self.centralwidget)
+        self.layoutWidget = QWidget(self.centralwidget)
+        self.layoutWidget.setObjectName(u"layoutWidget")
+        self.layoutWidget.setGeometry(QRect(0, 10, 541, 401))
+        self.horizontalLayout_3 = QHBoxLayout(self.layoutWidget)
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_3 = QVBoxLayout()
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(10, 10, 10, 10)
+        self.selectButton = QPushButton(self.layoutWidget)
+        self.selectButton.setObjectName(u"selectButton")
+
+        self.verticalLayout_3.addWidget(self.selectButton)
+
+        self.groupBox = QGroupBox(self.layoutWidget)
         self.groupBox.setObjectName(u"groupBox")
-        self.groupBox.setGeometry(QRect(10, 50, 121, 321))
         self.groupBox.setStyleSheet(u"border-color: rgb(255, 255, 0);\n"
                                     "background-color: rgb(255, 170, 255);")
         self.groupBox.setFlat(False)
         self.groupBox.setCheckable(False)
         self.verticalLayoutWidget = QWidget(self.groupBox)
         self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
-        self.verticalLayoutWidget.setGeometry(QRect(20, 20, 81, 301))
+        self.verticalLayoutWidget.setGeometry(QRect(20, 20, 105, 301))
         self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setContentsMargins(15, 10, 15, 10)
         self.ASCIIButton = QPushButton(self.verticalLayoutWidget)
         self.ASCIIButton.setObjectName(u"ASCIIButton")
+        self.ASCIIButton.setStyleSheet(u"background-color: rgb(255, 255, 255);")
         self.ASCIIButton.setCheckable(True)
 
         self.verticalLayout.addWidget(self.ASCIIButton)
 
         self.GB2312Button = QPushButton(self.verticalLayoutWidget)
         self.GB2312Button.setObjectName(u"GB2312Button")
+        self.GB2312Button.setStyleSheet(u"background-color: rgb(255, 255, 255);")
         self.GB2312Button.setCheckable(True)
 
         self.verticalLayout.addWidget(self.GB2312Button)
 
         self.GBKButton = QPushButton(self.verticalLayoutWidget)
         self.GBKButton.setObjectName(u"GBKButton")
+        self.GBKButton.setStyleSheet(u"background-color: rgb(255, 255, 255);")
         self.GBKButton.setCheckable(True)
 
         self.verticalLayout.addWidget(self.GBKButton)
 
         self.Big5Button = QPushButton(self.verticalLayoutWidget)
         self.Big5Button.setObjectName(u"Big5Button")
+        self.Big5Button.setStyleSheet(u"background-color: rgb(255, 255, 255);")
         self.Big5Button.setCheckable(True)
 
         self.verticalLayout.addWidget(self.Big5Button)
 
         self.UTF8Button = QPushButton(self.verticalLayoutWidget)
         self.UTF8Button.setObjectName(u"UTF8Button")
+        self.UTF8Button.setStyleSheet(u"background-color: rgb(255, 255, 255);")
         self.UTF8Button.setCheckable(True)
 
         self.verticalLayout.addWidget(self.UTF8Button)
 
         self.UTF16Button = QPushButton(self.verticalLayoutWidget)
         self.UTF16Button.setObjectName(u"UTF16Button")
+        self.UTF16Button.setStyleSheet(u"background-color: rgb(255, 255, 255);")
         self.UTF16Button.setCheckable(True)
 
         self.verticalLayout.addWidget(self.UTF16Button)
 
-        self.selectButton = QPushButton(self.centralwidget)
-        self.selectButton.setObjectName(u"selectButton")
-        self.selectButton.setGeometry(QRect(14, 10, 111, 31))
-        self.tabWidget = QTabWidget(self.centralwidget)
+        self.verticalLayout.setStretch(0, 1)
+        self.verticalLayout.setStretch(1, 1)
+        self.verticalLayout.setStretch(2, 1)
+        self.verticalLayout.setStretch(3, 1)
+        self.verticalLayout.setStretch(4, 1)
+        self.verticalLayout.setStretch(5, 1)
+
+        self.verticalLayout_3.addWidget(self.groupBox)
+
+        self.verticalLayout_3.setStretch(0, 1)
+        self.verticalLayout_3.setStretch(1, 5)
+
+        self.horizontalLayout_3.addLayout(self.verticalLayout_3)
+
+        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(10, 10, 10, 10)
+        self.tabWidget = QTabWidget(self.layoutWidget)
         self.tabWidget.setObjectName(u"tabWidget")
-        self.tabWidget.setGeometry(QRect(150, 9, 371, 61))
         self.tab = QWidget()
         self.tab.setObjectName(u"tab")
         self.tab.setEnabled(True)
+        self.tab.setStyleSheet(u"background-color: rgb(0, 255, 255);")
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QWidget()
         self.tab_2.setObjectName(u"tab_2")
+        self.tab_2.setStyleSheet(u"background-color: rgb(0, 255, 255);")
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_3 = QWidget()
         self.tab_3.setObjectName(u"tab_3")
+        self.tab_3.setStyleSheet(u"background-color: rgb(0, 255, 255);")
         self.widget = QWidget(self.tab_3)
         self.widget.setObjectName(u"widget")
         self.widget.setGeometry(QRect(-1, 0, 361, 31))
-        self.widget.setStyleSheet(u"background-color: rgb(0, 255, 255);")
+        self.widget.setStyleSheet(u"")
         self.horizontalLayoutWidget = QWidget(self.widget)
         self.horizontalLayoutWidget.setObjectName(u"horizontalLayoutWidget")
         self.horizontalLayoutWidget.setGeometry(QRect(0, 0, 361, 31))
@@ -111,27 +170,32 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.label_2 = QLabel(self.horizontalLayoutWidget)
         self.label_2.setObjectName(u"label_2")
+        self.label_2.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.horizontalLayout.addWidget(self.label_2)
 
         self.label_3 = QLabel(self.horizontalLayoutWidget)
         self.label_3.setObjectName(u"label_3")
+        self.label_3.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.horizontalLayout.addWidget(self.label_3)
 
         self.label = QLabel(self.horizontalLayoutWidget)
         self.label.setObjectName(u"label")
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.horizontalLayout.addWidget(self.label)
 
         self.label_4 = QLabel(self.horizontalLayoutWidget)
         self.label_4.setObjectName(u"label_4")
+        self.label_4.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.horizontalLayout.addWidget(self.label_4)
 
         self.tabWidget.addTab(self.tab_3, "")
         self.tab_4 = QWidget()
         self.tab_4.setObjectName(u"tab_4")
+        self.tab_4.setStyleSheet(u"background-color: rgb(0, 255, 255);")
         self.widget_2 = QWidget(self.tab_4)
         self.widget_2.setObjectName(u"widget_2")
         self.widget_2.setGeometry(QRect(-1, 0, 361, 31))
@@ -143,6 +207,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.lineEdit = QLineEdit(self.horizontalLayoutWidget_2)
         self.lineEdit.setObjectName(u"lineEdit")
+        self.lineEdit.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
+                                    "")
 
         self.horizontalLayout_2.addWidget(self.lineEdit)
 
@@ -158,13 +224,32 @@ class Ui_MainWindow(object):
 
         self.serachButton = QPushButton(self.horizontalLayoutWidget_2)
         self.serachButton.setObjectName(u"serachButton")
+        self.serachButton.setStyleSheet(u"background-color: rgb(255, 255, 255);")
 
         self.horizontalLayout_2.addWidget(self.serachButton)
 
         self.tabWidget.addTab(self.tab_4, "")
-        self.tableView = QTableView(self.centralwidget)
+
+        self.verticalLayout_2.addWidget(self.tabWidget)
+
+        self.tableView = QTableView(self.layoutWidget)
         self.tableView.setObjectName(u"tableView")
-        self.tableView.setGeometry(QRect(150, 70, 371, 301))
+
+        self.verticalLayout_2.addWidget(self.tableView)
+
+        self.textEdit = QTextEdit(self.layoutWidget)
+        self.textEdit.setObjectName(u"textEdit")
+
+        self.verticalLayout_2.addWidget(self.textEdit)
+
+        self.verticalLayout_2.setStretch(0, 1)
+        self.verticalLayout_2.setStretch(1, 3)
+        self.verticalLayout_2.setStretch(2, 2)
+
+        self.horizontalLayout_3.addLayout(self.verticalLayout_2)
+
+        self.horizontalLayout_3.setStretch(0, 1)
+        self.horizontalLayout_3.setStretch(1, 3)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -180,6 +265,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        self.selectButton.setText(QCoreApplication.translate("MainWindow", u"\u9009\u62e9\u6587\u4ef6", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"\u7f16\u7801\u683c\u5f0f", None))
         self.ASCIIButton.setText(QCoreApplication.translate("MainWindow", u"ASCII", None))
         self.GB2312Button.setText(QCoreApplication.translate("MainWindow", u"GB2312", None))
@@ -187,7 +273,6 @@ class Ui_MainWindow(object):
         self.Big5Button.setText(QCoreApplication.translate("MainWindow", u"Big5", None))
         self.UTF8Button.setText(QCoreApplication.translate("MainWindow", u"UTF-8", None))
         self.UTF16Button.setText(QCoreApplication.translate("MainWindow", u"UTF-16", None))
-        self.selectButton.setText(QCoreApplication.translate("MainWindow", u"\u9009\u62e9\u6587\u4ef6", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab),
                                   QCoreApplication.translate("MainWindow", u"\u67e5\u770b\u7f16\u7801", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2),
@@ -217,7 +302,8 @@ class HexModel(QtCore.QAbstractTableModel):
         return (len(self._data) + 15) // 16
 
     def columnCount(self, parent=None):
-        return 17  # 16 columns for hex values, 1 for the text representation
+        # return 17  # 16 columns for hex values, 1 for the text representation
+        return 16
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
         if role == QtCore.Qt.DisplayRole:
@@ -228,24 +314,25 @@ class HexModel(QtCore.QAbstractTableModel):
                 else:
                     return "  "  # 数据不满16字节的部分用空字符串填充
             else:  # 文本表示
-                if index.column() == 16:  # 只在最后一列处理文本
-                    unit = 16
-                    start = index.row() * unit
-                    end = min(start + unit, len(self._data))
-                    bytes_slice = self._data[start:end]
-                    try:
-                        # 解码整个字节切片
-                        decoded_text = bytes_slice.decode(self.character_encoding, errors='strict')
-                        # 用点填充无法显示的字符
-                        printable_text = ''.join(c if c.isprintable() else '·' for c in decoded_text)
-                        return printable_text
-                    except UnicodeDecodeError as e:
-                        # 如果在行的中间遇到解码错误，尝试解码直到出错的部分
-                        valid_text = bytes_slice[:e.start].decode(self.character_encoding, errors='backslashreplace')
-                        # 用点填充解码错误后的剩余部分
-                        return valid_text + '.' * (unit - len(valid_text))
-                    # except LookupError:
-                    #     print("编码错误")
+                # if index.column() == 16:  # 只在最后一列处理文本
+                #     unit = 16
+                #     start = index.row() * unit
+                #     end = min(start + unit, len(self._data))
+                #     bytes_slice = self._data[start:end]
+                #     try:
+                #         # 解码整个字节切片
+                #         decoded_text = bytes_slice.decode(self.character_encoding, errors='strict')
+                #         # 用点填充无法显示的字符
+                #         printable_text = ''.join(c if c.isprintable() else '·' for c in decoded_text)
+                #         return printable_text
+                #     except UnicodeDecodeError as e:
+                #         # 如果在行的中间遇到解码错误，尝试解码直到出错的部分
+                #         valid_text = bytes_slice[:e.start].decode(self.character_encoding, errors='backslashreplace')
+                #         # 用点填充解码错误后的剩余部分
+                #         return valid_text + '.' * (unit - len(valid_text))
+                #     # except LookupError:
+                #     #     print("编码错误")
+                pass
         elif role == QtCore.Qt.TextAlignmentRole:
             return QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter
 
@@ -265,10 +352,13 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.save_filepath = None
         self.setupUi(self)
+        self.centralwidget.setLayout(self.horizontalLayout_3)
+        self.groupBox.setLayout(self.verticalLayout)
         self.open_file_path = None
         self.open_file_name = None
         self.selectButton.clicked.connect(self.open_file)
         self.nowCoding = 'utf-8'
+        # self.convertCoding = None
         self.charButtons = [self.UTF8Button, self.UTF16Button, self.GB2312Button, self.GBKButton, self.ASCIIButton,
                             self.Big5Button]
 
@@ -284,38 +374,64 @@ class mainWindow(QMainWindow, Ui_MainWindow):
         current_tab_text = self.tabWidget.tabText(self.tabWidget.currentIndex())
         # 获取所有按钮的文本
         # buttons_text = ", ".join([button.text() for button in self.buttons])
-        buttons_text = None
+        buttons_text = str(self.nowCoding)
         for btn in self.charButtons:
             if btn.isChecked():
                 buttons_text = btn.text()
                 break
         if buttons_text is None:
-            buttons_text = "默认UTF-8"
+            buttons_text = "默认utf-8"
         # 更新状态栏的文本
         self.statusbar.showMessage(
             f"当前模式: {current_tab_text} | 当前编码: {buttons_text} | 文件：{self.open_file_name}")
 
+    def showText(self, data, character_encoding):
+        # all_len=len(data)
+        try:
+            # 解码整个字节切片
+            decoded_text = data.decode(character_encoding, errors='strict')
+            # 用.填充无法显示的字符
+            printable_text = ''.join(c if c.isprintable() else '.' for c in decoded_text)
+            # return printable_text
+            self.textEdit.setText(printable_text)
+        except UnicodeDecodeError as e:
+            # 如果在行的中间遇到解码错误，尝试解码直到出错的部分
+            valid_text = data.decode(character_encoding, errors='replace')
+            # 用点填充解码错误后的剩余部分
+            # return valid_text + '.' * (len(data) + len(valid_text))
+            self.textEdit.setText(valid_text + '.' * (len(data) - len(valid_text)))
+
     def button_clicked(self):
         clicked_button = self.sender()
-        # 还原其他未被点击的按钮
-        for button in self.charButtons:
-            if button != clicked_button:
-                button.setChecked(False)
-        self.nowCoding = clicked_button.text()
-        self.decode(self.nowCoding)
-        # print(self.nowCoding)
+        ind = self.tabWidget.currentIndex()
+        # self.buttonCheckedClean()
+        if ind == 0:
+            self.nowCoding = clicked_button.text()
+            self.buttonCheckedClean()
+            clicked_button.setChecked(False)
+            self.fileDecode(str(self.nowCoding))
+        elif ind == 1:
+            self.convertButton(str(self.nowCoding))
+        elif ind == 2:
+            self.buttonCheckedClean()
+            self.wordCount()
+        elif ind == 3:
+            self.buttonCheckedClean()
+            self.wordSearch()
 
-    def decode(self, character_encoding):
+    def fileDecode(self, character_encoding):
         file_path = self.open_file_path
         if os.path.exists(file_path):
             with open(file_path, 'rb') as file:
                 data = file.read()
+                self.showText(data, character_encoding)
                 hexModel = HexModel(data, character_encoding)
                 self.tableView.setModel(hexModel)
                 self.tableView.resizeColumnsToContents()
                 self.tableView.setColumnWidth(16, 200)  # You may need to adjust this width
         else:
             print("文件不存在")
+            QMessageBox().warning(self, "警告", "文件不存在")
 
     def open_file(self):
         if self.open_file_path is None:
@@ -325,10 +441,11 @@ class mainWindow(QMainWindow, Ui_MainWindow):
             self.open_file_path = str(self.open_file_path).replace("/", "\\").replace(":", ":")
             self.open_file_name = os.path.basename(self.open_file_path)
             if self.open_file_path is not None and self.open_file_path != "":
-                self.decode(str(self.nowCoding))
+                self.fileDecode(str(self.nowCoding))
             self.statusBarChange()
         except:
             print("取消打开文件")
+            QMessageBox().warning(self, "警告", "取消打开文件")
 
     def save_file(self):
         self.save_file_path, _ = QFileDialog.getSaveFileName(None, '保存文本文件', '', '(*.txt)')
@@ -337,6 +454,71 @@ class mainWindow(QMainWindow, Ui_MainWindow):
             self.save_filepath = str(self.save_file_path).replace("/", "\\").replace(":", ":")
         except:
             print("取消保存文件")
+            QMessageBox().warning(self, "警告", "取消保存文件")
+
+    def buttonCheckedClean(self):
+        for btn in self.charButtons:
+            btn.setChecked(False)
+
+    def convertButton(self, formerCoding):
+        target_encoding = "tar"
+        for btn in self.charButtons:
+            if btn.isChecked():
+                target_encoding = btn.text()
+                if not self.convert_and_save_file(formerCoding, target_encoding):
+                    self.nowCoding = formerCoding
+                    self.fileDecode(formerCoding)
+                    return
+
+    def convert_and_save_file(self, character_encoding, character_decoding):
+        # 获取保存路径
+        self.save_file()
+        # 读取原始文件
+        with open(self.open_file_path, 'rb') as file:
+            raw_data = file.read()
+        # 解码
+        try:
+            decoded_data = raw_data.decode(character_encoding)
+        except UnicodeDecodeError:
+            print("原始文件解码失败")
+            QMessageBox().warning(self, "警告", f"文本文件{self.open_file_name}以{character_encoding}解码失败",
+                                  )
+            return False
+        # 重新编码
+        try:
+            encoded_data = decoded_data.encode(character_decoding)
+        except:
+            print(f"未知的编码格式: {character_decoding}")
+            QMessageBox().warning(self, "警告", f"{character_encoding}中有无法转为{character_decoding}的字符")
+            return False
+        # 保存到新文件
+        if self.save_file_path is not None and self.save_file_path != "":
+            with open(self.save_file_path, 'wb') as file:
+                file.write(encoded_data)
+            print(f"文件已保存到 {self.save_file_path}")
+            QMessageBox().information(self, "提示", "新编码格式文件已保存")
+            # 显示转换后的文件编码
+            file_path = self.save_file_path
+            if os.path.exists(file_path):
+                with open(file_path, 'rb') as file:
+                    data = file.read()
+                    hexModel = HexModel(data, character_decoding)
+                    self.tableView.setModel(hexModel)
+                    self.tableView.resizeColumnsToContents()
+                    self.tableView.setColumnWidth(16, 200)
+                    self.showText(data, character_decoding)
+                    self.open_file_path = self.save_file_path
+                    self.open_file_name = self.open_file_name = os.path.basename(self.open_file_path)
+                    self.buttonCheckedClean()
+                    self.statusBarChange()
+            else:
+                QMessageBox().warning(self, "警告", "文件不存在")
+
+    def wordCount(self):
+        pass
+
+    def wordSearch(self):
+        pass
 
 
 if __name__ == "__main__":
@@ -347,21 +529,3 @@ if __name__ == "__main__":
     widget.show()
 
     sys.exit(app.exec())
-
-# class MyWidget(QtWidgets.QWidget):
-#     def __init__(self):
-#         super().__init__()
-#
-#         self.button = QtWidgets.QPushButton("点这里")
-#
-#         self.layout = QtWidgets.QVBoxLayout(self)
-#         self.layout.addWidget(self.button)
-#
-#         self.button.clicked.connect(self.showMessage)
-#
-#     @QtCore.Slot()
-#     def showMessage(self):
-#         msgBox = QtWidgets.QMessageBox()
-#         msgBox.setText("Hello world")
-#         msgBox.setStandardButtons(QtWidgets.QMessageBox.Ok)
-#         ret = msgBox.exec()
