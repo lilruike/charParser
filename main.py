@@ -1,9 +1,3 @@
-# 实现.txt进入显示整个文本的十六进制
-# 在查看器中查看到不同的编码格式 常见的编码（如ASCII码， GB2312码，GBK码，Big5，UTF-8，UTF-16）
-# word count
-# word search
-# -*- coding: utf-8 -*-
-
 # -*- coding: utf-8 -*-
 ################################################################################
 ## Form generated from reading UI file 'mainWindowCaxyVC.ui'
@@ -545,49 +539,44 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                 model.setData(index, QColor(Qt.white), Qt.BackgroundRole)
 
     def wordSearch(self):
+        # self.cleanTextColor()
+        # self.cleanViewColor()
         # 查询字节
-        self.cleanViewColor()
+        self.fileDecode(self.nowCoding)
+        input_text = self.lineEdit.text()
         if self.radioButton.isChecked():
             model = self.tableView.model()
             found = False
-            hex_value = self.lineEdit.text()
+            hex_value = input_text
             rows = model.rowCount()
             cols = model.columnCount()
+            if hex_value != "":
 
-            for row in range(rows):
-                for col in range(cols):
-                    index = model.index(row, col)
-                    cell_value = model.data(index, Qt.DisplayRole)
-                    model.setData(index, QColor(Qt.white), Qt.BackgroundRole)
-                    if cell_value == hex_value:
-                        model.setData(index, QColor(Qt.green), Qt.BackgroundRole)  # 设置背景为绿色
-                        found = True
-            if found:
-                return
-            else:
                 for row in range(rows):
                     for col in range(cols):
                         index = model.index(row, col)
-                        model.setData(index, QColor(Qt.red), Qt.BackgroundRole)  # 设置背景为红色
+                        cell_value = model.data(index, Qt.DisplayRole)
+                        model.setData(index, QColor(Qt.white), Qt.BackgroundRole)
+                        if cell_value == hex_value:
+                            model.setData(index, QColor(Qt.green), Qt.BackgroundRole)  # 设置背景为绿色
+                            found = True
+                if found:
+                    return
+                else:
+                    for row in range(rows):
+                        for col in range(cols):
+                            index = model.index(row, col)
+                            model.setData(index, QColor(Qt.red), Qt.BackgroundRole)  # 设置背景为红色
 
         if self.radioButton_2.isChecked():
-
-            input_text = self.lineEdit.text()
-
             # 创建光标并选择所有文本
             cursor = self.textEdit.textCursor()
-            # cursor.select(QTextCursor.Document)  # 选择整个文档
-            # cursor.mergeCharFormat(QTextCharFormat())  # 清除原有格式
-            #
-            # # 重新设置所有文本为黑色
-            # self.textEdit.setTextColor(QColor(0, 0, 0))  # 恢复为黑色
-
+            cursor.select(QTextCursor.Document)  # 选择整个文档
             if input_text != "":
                 # 创建 QTextCharFormat 用于设置颜色
                 format_match = QTextCharFormat()
                 format_match.setForeground(QColor(0, 255, 0))  # 设置为绿色
                 # 找到匹配的内容并设置颜色
-                cursor = self.textEdit.textCursor()
                 cursor.setPosition(0)
                 found_match = False  # 用于跟踪是否找到匹配
 
@@ -595,25 +584,35 @@ class mainWindow(QMainWindow, Ui_MainWindow):
                     cursor = self.textEdit.document().find(input_text, cursor)
                     if cursor.isNull():
                         break
-                    cursor.mergeCharFormat(format_match)
+                    cursor.mergeCharFormat(format_match)  # 设置为绿色
                     found_match = True  # 找到至少一个匹配
-
                 if not found_match:
-                    # 如果没有找到匹配，设置所有文字为红色
-                    self.textEdit.selectAll()
-                    self.textEdit.setTextColor(QColor(255, 0, 0))  # 设置为红色
-                    cursor.mergeCharFormat(format_match)
+                    cursor = self.textEdit.textCursor()
+                    cursor.select(QTextCursor.Document)
+                    format = self.textEdit.currentCharFormat()
+                    format.setForeground(QColor(255, 0, 0))
+                    cursor.setCharFormat(format)
             else:
-                # 如果输入框为空，恢复为黑色
-                self.textEdit.selectAll()
-                self.textEdit.setTextColor(QColor(0, 0, 0))
-                format_match = QTextCharFormat()
-                format_match.setForeground(QColor(0, 0, 0))
-            cursor.mergeCharFormat(format_match)
-
-            # 设置光标回到文本末尾
+                self.cleanTextColor()
             cursor.movePosition(QTextCursor.End)
             self.textEdit.setTextCursor(cursor)
+
+    def cleanTextColor(self):
+        cursor = self.textEdit.textCursor()
+        cursor.select(QTextCursor.Document)
+        format = self.textEdit.currentCharFormat()
+        format.setForeground(QColor(0, 0, 0))
+        cursor.setCharFormat(format)
+
+        # cursor = self.textEdit.textCursor()
+        # cursor.select(QTextCursor.Document)  # Select all text
+        # # cursor.setCharFormat(self.get_color_format(QColor(255, 0, 0)))  # Set text color to red
+        # format = self.textEdit.currentCharFormat()
+        # format.setForeground(QColor(0, 0, 0))
+        # cursor.setCharFormat(format)
+        #
+        # cursor.movePosition(QTextCursor.End)
+        # self.textEdit.setTextCursor(cursor)
 
 
 if __name__ == "__main__":
